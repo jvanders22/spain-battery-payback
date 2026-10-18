@@ -1,0 +1,23 @@
+name: ci
+on:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npx vite build
+      - name: axe (WCAG 2.1 AA)
+        run: |
+          npx vite preview --port 4173 --strictPort &
+          sleep 3
+          CHROME=$(which google-chrome || which chromium) node scripts/axe.mjs

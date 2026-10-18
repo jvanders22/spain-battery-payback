@@ -1,0 +1,470 @@
+[
+{
+"code": "15",
+"name": "A Coruña",
+"capital": "A Coruña",
+"lat": 43.36,
+"lon": -8.41,
+"tz": "Europe/Madrid",
+"yield_kwh_kwp": 1327
+},
+{
+"code": "02",
+"name": "Albacete",
+"capital": "Albacete",
+"lat": 38.99,
+"lon": -1.86,
+"tz": "Europe/Madrid",
+"yield_kwh_kwp": 1692
+},
+{
+"code": "03",
+"name": "Alicante",
+"capital": "Alicante",
+"lat": 38.35,
+"lon": -0.48,
+"tz": "Europe/Madrid",
+"yield_kwh_kwp": 1662
+},
+{
+"code": "04",
+"name": "Almería",
+"capital": "Almería",
+"lat": 36.84,
+"lon": -2.46,
+"tz": "Europe/Madrid",
+"yield_kwh_kwp": 1763
+},
+{
+"code": "33",
+"name": "Asturias",
+"capital": "Oviedo",
+"lat": 43.36,
+"lon": -5.85,
+"tz": "Europe/Madrid",
+"yield_kwh_kwp": 1248
+},
+{
+"code": "06",
+"name": "Badajoz",
+"capital": "Badajoz",
+"lat": 38.88,
+"lon": -6.97,
+"tz": "Europe/Madrid",
+"yield_kwh_kwp": 1598
+},
+{
+"code": "08",
+"name": "Barcelona",
+"capital": "Barcelona",
+"lat": 41.39,
+"lon": 2.17,
+"tz": "Europe/Madrid",
+"yield_kwh_kwp": 1617
+},
+{
+"code": "48",
+"name": "Bizkaia",
+"capital": "Bilbao",
+"lat": 43.26,
+"lon": -2.93,
+"tz": "Europe/Madrid",
+"yield_kwh_kwp": 1167
+},
+{
+"code": "09",
+"name": "Burgos",
+"capital": "Burgos",
+"lat": 42.34,
+"lon": -3.7,
+"tz": "Europe/Madrid",
+"yield_kwh_kwp": 1474
+},
+{
+"code": "39",
+"name": "Cantabria",
+"capital": "Santander",
+"lat": 43.46,
+"lon": -3.8,
+"tz": "Europe/Madrid",
+"yield_kwh_kwp": 1201
+},
+{
+"code": "12",
+"name": "Castellón",
+"capital": "Castelló de la Plana",
+"lat": 39.99,
+"lon": -0.05,
+"tz": "Europe/Madrid",
+"yield_kwh_kwp": 1680
+},
+{
+"code": "51",
+"name": "Ceuta",
+"capital": "Ceuta",
+"lat": 35.89,
+"lon": -5.32,
+"tz": "Europe/Madrid",
+"yield_kwh_kwp": 1671
+},
+{
+"code": "13",
+"name": "Ciudad Real",
+"capital": "Ciudad Real",
+"lat": 38.98,
+"lon": -3.93,
+"tz": "Europe/Madrid",
+"yield_kwh_kwp": 1655
+},
+{
+"code": "16",
+"name": "Cuenca",
+"capital": "Cuenca",
+"lat": 40.07,
+"lon": -2.13,
+"tz": "Europe/Madrid",
+"yield_kwh_kwp": 1634
+},
+{
+"code": "10",
+"name": "Cáceres",
+"capital": "Cáceres",
+"lat": 39.47,
+"lon": -6.37,
+"tz": "Europe/Madrid",
+"yield_kwh_kwp": 1623
+},
+{
+"code": "11",
+"name": "Cádiz",
+"capital": "Cádiz",
+"lat": 36.53,
+"lon": -6.29,
+"tz": "Europe/Madrid",
+"yield_kwh_kwp": 1752
+},
+{
+"code": "14",
+"name": "Córdoba",
+"capital": "Córdoba",
+"lat": 37.89,
+"lon": -4.78,
+"tz": "Europe/Madrid",
+"yield_kwh_kwp": 1675
+},
+{
+"code": "20",
+"name": "Gipuzkoa",
+"capital": "Donostia-San Sebastián",
+"lat": 43.32,
+"lon": -1.98,
+"tz": "Europe/Madrid",
+"yield_kwh_kwp": 1185
+},
+{
+"code": "17",
+"name": "Girona",
+"capital": "Girona",
+"lat": 41.98,
+"lon": 2.82,
+"tz": "Europe/Madrid",
+"yield_kwh_kwp": 1500
+},
+{
+"code": "18",
+"name": "Granada",
+"capital": "Granada",
+"lat": 37.18,
+"lon": -3.6,
+"tz": "Europe/Madrid",
+"yield_kwh_kwp": 1735
+},
+{
+"code": "19",
+"name": "Guadalajara",
+"capital": "Guadalajara",
+"lat": 40.63,
+"lon": -3.17,
+"tz": "Europe/Madrid",
+"yield_kwh_kwp": 1634
+},
+{
+"code": "21",
+"name": "Huelva",
+"capital": "Huelva",
+"lat": 37.26,
+"lon": -6.95,
+"tz": "Europe/Madrid",
+"yield_kwh_kwp": 1727
+},
+{
+"code": "22",
+"name": "Huesca",
+"capital": "Huesca",
+"lat": 42.14,
+"lon": -0.41,
+"tz": "Europe/Madrid",
+"yield_kwh_kwp": 1647
+},
+{
+"code": "07",
+"name": "Illes Balears",
+"capital": "Palma",
+"lat": 39.57,
+"lon": 2.65,
+"tz": "Europe/Madrid",
+"yield_kwh_kwp": 1645
+},
+{
+"code": "23",
+"name": "Jaén",
+"capital": "Jaén",
+"lat": 37.77,
+"lon": -3.79,
+"tz": "Europe/Madrid",
+"yield_kwh_kwp": 1719
+},
+{
+"code": "26",
+"name": "La Rioja",
+"capital": "Logroño",
+"lat": 42.47,
+"lon": -2.45,
+"tz": "Europe/Madrid",
+"yield_kwh_kwp": 1464
+},
+{
+"code": "35",
+"name": "Las Palmas",
+"capital": "Las Palmas de Gran Canaria",
+"lat": 28.12,
+"lon": -15.43,
+"tz": "Atlantic/Canary",
+"yield_kwh_kwp": 1684
+},
+{
+"code": "24",
+"name": "León",
+"capital": "León",
+"lat": 42.6,
+"lon": -5.57,
+"tz": "Europe/Madrid",
+"yield_kwh_kwp": 1580
+},
+{
+"code": "25",
+"name": "Lleida",
+"capital": "Lleida",
+"lat": 41.62,
+"lon": 0.62,
+"tz": "Europe/Madrid",
+"yield_kwh_kwp": 1637
+},
+{
+"code": "27",
+"name": "Lugo",
+"capital": "Lugo",
+"lat": 43.01,
+"lon": -7.56,
+"tz": "Europe/Madrid",
+"yield_kwh_kwp": 1347
+},
+{
+"code": "28",
+"name": "Madrid",
+"capital": "Madrid",
+"lat": 40.42,
+"lon": -3.7,
+"tz": "Europe/Madrid",
+"yield_kwh_kwp": 1650
+},
+{
+"code": "52",
+"name": "Melilla",
+"capital": "Melilla",
+"lat": 35.29,
+"lon": -2.94,
+"tz": "Europe/Madrid",
+"yield_kwh_kwp": 1696
+},
+{
+"code": "30",
+"name": "Murcia",
+"capital": "Murcia",
+"lat": 37.99,
+"lon": -1.13,
+"tz": "Europe/Madrid",
+"yield_kwh_kwp": 1689
+},
+{
+"code": "29",
+"name": "Málaga",
+"capital": "Málaga",
+"lat": 36.72,
+"lon": -4.42,
+"tz": "Europe/Madrid",
+"yield_kwh_kwp": 1752
+},
+{
+"code": "31",
+"name": "Navarra",
+"capital": "Pamplona",
+"lat": 42.81,
+"lon": -1.64,
+"tz": "Europe/Madrid",
+"yield_kwh_kwp": 1407
+},
+{
+"code": "32",
+"name": "Ourense",
+"capital": "Ourense",
+"lat": 42.34,
+"lon": -7.86,
+"tz": "Europe/Madrid",
+"yield_kwh_kwp": 1367
+},
+{
+"code": "34",
+"name": "Palencia",
+"capital": "Palencia",
+"lat": 42.01,
+"lon": -4.53,
+"tz": "Europe/Madrid",
+"yield_kwh_kwp": 1566
+},
+{
+"code": "36",
+"name": "Pontevedra",
+"capital": "Pontevedra",
+"lat": 42.43,
+"lon": -8.64,
+"tz": "Europe/Madrid",
+"yield_kwh_kwp": 1355
+},
+{
+"code": "37",
+"name": "Salamanca",
+"capital": "Salamanca",
+"lat": 40.97,
+"lon": -5.66,
+"tz": "Europe/Madrid",
+"yield_kwh_kwp": 1594
+},
+{
+"code": "38",
+"name": "Santa Cruz de Tenerife",
+"capital": "Santa Cruz de Tenerife",
+"lat": 28.46,
+"lon": -16.25,
+"tz": "Atlantic/Canary",
+"yield_kwh_kwp": 1797
+},
+{
+"code": "40",
+"name": "Segovia",
+"capital": "Segovia",
+"lat": 40.95,
+"lon": -4.12,
+"tz": "Europe/Madrid",
+"yield_kwh_kwp": 1546
+},
+{
+"code": "41",
+"name": "Sevilla",
+"capital": "Sevilla",
+"lat": 37.39,
+"lon": -5.98,
+"tz": "Europe/Madrid",
+"yield_kwh_kwp": 1699
+},
+{
+"code": "42",
+"name": "Soria",
+"capital": "Soria",
+"lat": 41.76,
+"lon": -2.47,
+"tz": "Europe/Madrid",
+"yield_kwh_kwp": 1572
+},
+{
+"code": "43",
+"name": "Tarragona",
+"capital": "Tarragona",
+"lat": 41.12,
+"lon": 1.25,
+"tz": "Europe/Madrid",
+"yield_kwh_kwp": 1605
+},
+{
+"code": "44",
+"name": "Teruel",
+"capital": "Teruel",
+"lat": 40.34,
+"lon": -1.11,
+"tz": "Europe/Madrid",
+"yield_kwh_kwp": 1642
+},
+{
+"code": "45",
+"name": "Toledo",
+"capital": "Toledo",
+"lat": 39.86,
+"lon": -4.03,
+"tz": "Europe/Madrid",
+"yield_kwh_kwp": 1665
+},
+{
+"code": "46",
+"name": "Valencia",
+"capital": "València",
+"lat": 39.47,
+"lon": -0.38,
+"tz": "Europe/Madrid",
+"yield_kwh_kwp": 1712
+},
+{
+"code": "47",
+"name": "Valladolid",
+"capital": "Valladolid",
+"lat": 41.65,
+"lon": -4.72,
+"tz": "Europe/Madrid",
+"yield_kwh_kwp": 1566
+},
+{
+"code": "49",
+"name": "Zamora",
+"capital": "Zamora",
+"lat": 41.5,
+"lon": -5.75,
+"tz": "Europe/Madrid",
+"yield_kwh_kwp": 1586
+},
+{
+"code": "50",
+"name": "Zaragoza",
+"capital": "Zaragoza",
+"lat": 41.65,
+"lon": -0.89,
+"tz": "Europe/Madrid",
+"yield_kwh_kwp": 1650
+},
+{
+"code": "01",
+"name": "Álava",
+"capital": "Vitoria-Gasteiz",
+"lat": 42.85,
+"lon": -2.67,
+"tz": "Europe/Madrid",
+"yield_kwh_kwp": 1286
+},
+{
+"code": "05",
+"name": "Ávila",
+"capital": "Ávila",
+"lat": 40.66,
+"lon": -4.7,
+"tz": "Europe/Madrid",
+"yield_kwh_kwp": 1592
+}
+]
