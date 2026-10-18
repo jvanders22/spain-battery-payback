@@ -1,0 +1,5 @@
+node_modules
+dist
+data/raw/pvgis
+.venv
+__pycache__
