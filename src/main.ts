@@ -66,7 +66,9 @@ function buildFields(d: ReturnType<typeof derivedDefaults>) {
 }
 
 function setDefault(id: string, v: number) {
-  if (!edited.has(id)) ($(id) as HTMLInputElement).value = String(v);
+  const el = $(id) as HTMLInputElement;
+  el.defaultValue = String(v); // empty-field fallback uses the current default, never 0
+  if (!edited.has(id)) el.value = String(v);
 }
 
 function syncVisibility() {
