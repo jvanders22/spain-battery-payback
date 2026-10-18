@@ -2,13 +2,18 @@ import "./style.css";
 import { render } from "./chart";
 import { loadGoatCounter } from "./config";
 import { ASSUMPTIONS, BATTERY_PRICE, IRPF, PRICE_SOURCES, type Size } from "./defaults";
-import { derivedDefaults, fmt, run, verdict, type Inputs, type TariffKind, type YearData } from "./model";
+import { derivedDefaults, fmt, importPrices, run, verdict, type Inputs, type TariffKind, type YearData } from "./model";
 import { INDEXED_DEFAULTS, SOURCES, withTaxes } from "./tariffs";
 
 interface Province { code: string; name: string; capital: string; yield_kwh_kwp: number }
 
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
-const num = (id: string) => parseFloat(($(id) as HTMLInputElement).value);
+/** Read a number field; empty or invalid falls back to the field's default value. */
+const val = (id: string) => {
+  const el = $(id) as HTMLInputElement;
+  const x = parseFloat(el.value);
+  return Number.isFinite(x) ? x : parseFloat(el.defaultValue || "0") || 0;
+};
 const radio = (name: string) => (document.querySelector(`input[name="${name}"]:checked`) as HTMLInputElement).value;
 
 let year: YearData;
@@ -76,7 +81,10 @@ function syncVisibility() {
   if (t !== "tou30" && !edited.has("who")) (document.querySelector('input[name="who"][value="home"]') as HTMLInputElement).checked = true;
   const business = radio("who") === "business";
   $("priceVat").textContent = business ? "(without IVA; a business recovers it)" : "(IVA included)";
-  $<HTMLInputElement>("irpf").disabled = business;
+  const noSolar = !(parseFloat($<HTMLInputElement>("kwp").value) > 0);
+  $<HTMLInputElement>("irpf").disabled = business || noSolar;
+  if (radio("consMode") === "bill" && !edited.has("consBill")) $<HTMLInputElement>("cons").value = "80";
+  if (radio("consMode") === "kwh" && edited.has("modeSwitched") && !edited.has("consKwh")) $<HTMLInputElement>("cons").value = "3500";
   const bill = radio("consMode") === "bill";
   $("consLabel").textContent = bill ? "Average monthly bill, €" : "Annual consumption, kWh";
 }
@@ -103,14 +111,19 @@ async function update() {
   batteryDefaults();
   const tariff = $<HTMLSelectElement>("tariff").value as TariffKind;
   const business = radio("who") === "business";
-  const v = (id: string) => num(id);
+  const v = (id: string) => val(id);
   const tou = tariff === "tou30" ? [0, 1, 2, 3, 4, 5].map((i) => v(`a_tou30_${i}`)) : [0, 1, 2].map((i) => v(`a_tou20_${i}`));
   const indexed = { adjustmentEurMwh: v("a_adj"), marginEurMwh: v("a_margin"), lossFactor: v("a_loss") };
   let annualKwh = v("cons");
   if (radio("consMode") === "bill") {
-    const avg = withTaxes(tariff === "fixed" ? v("a_fixed") : d.fixedPrice, !business);
+    // average price of the chosen tariff over the consumption profile; a bill includes IVA for everyone
+    const shape = tariff === "tou30" ? year.load30 : year.load20;
+    const prices = importPrices(year, { tariff, fixedPrice: v("a_fixed"), touPrices: tou, indexed });
+    let wsum = 0;
+    for (let i = 0; i < prices.length; i++) wsum += shape[i] * prices[i];
+    const avg = withTaxes(wsum, true);
     annualKwh = (v("cons") * 12 * v("a_billshare")) / avg;
-    $("consHint").textContent = `ESTIMATE: about ${fmt(annualKwh)} kWh a year (bill × 12 × ${v("a_billshare")} ÷ ${avg.toFixed(3)} €/kWh with taxes).`;
+    $("consHint").textContent = `ESTIMATE: about ${fmt(annualKwh)} kWh a year (bill × 12 × ${v("a_billshare")} ÷ ${avg.toFixed(3)} €/kWh, your tariff's average with taxes).`;
   } else $("consHint").textContent = "From your bills: the sum of 12 months, or the annual figure on the bill.";
   const inp: Inputs = {
     annualKwh: Math.max(0, annualKwh || 0), kwp: Math.max(0, v("kwp") || 0), solarPerKwp: s, tariff,
@@ -128,10 +141,12 @@ async function update() {
     : `A ${size} kWh battery in ${where} would have saved nothing in 2025.`;
   $("verdict").textContent = verdict(r);
   $("fSave").textContent = `€${fmt(r.savingsYear1)}`;
-  $("fPayback").textContent = r.paybackYears === null ? "never" : r.paybackYears > 50 ? "50+ years" : `${r.paybackYears.toFixed(1)} years`;
+  $("fPayback").textContent = pb === null ? (r.savingsYear1 > 0 ? "30+ years" : "never") : `${pb.toFixed(1)} years`;
   $("fNet").textContent = `${r.net10 < 0 ? "−" : "+"}€${fmt(Math.abs(r.net10))}`;
   $("fNet").classList.toggle("neg", r.net10 < 0);
-  $("resultNote").textContent = `price paid €${fmt(r.netPrice)}${inp.irpfDeduction && !business ? " after the IRPF deduction" : ""}; simple payback uses year-1 savings; the headline payback allows for capacity loss. Battery cycles about ${Math.round(r.cyclesPerYear)} times a year${r.gridChargedKwh > 1 ? ` and buys ${fmt(r.gridChargedKwh)} kWh from the grid at night` : ""}.`;
+  const simple = r.paybackYears === null ? "never" : `${r.paybackYears.toFixed(1)} years`;
+  const gcNote = inp.gridCharge && tariff !== "fixed" && !r.gridChargeUsed ? "; night charging from the grid did not lower the bill, so it is off" : r.gridChargedKwh > 1 ? `; it buys ${fmt(r.gridChargedKwh)} kWh from the grid at night` : "";
+  $("resultNote").textContent = `price paid €${fmt(r.netPrice)}${r.irpfApplied ? " after the IRPF deduction" : ""}; payback allows for capacity loss each year (on year-1 savings alone: ${simple}). The battery cycles about ${Math.round(r.cyclesPerYear)} times a year${gcNote}.`;
   const rows: [string, string, string][] = [
     ["Consumption, kWh", fmt(inp.annualKwh), fmt(inp.annualKwh)],
     ["Solar used directly or via battery, kWh", fmt(r.base.selfConsumedKwh), fmt(r.withBattery.selfConsumedKwh)],
@@ -173,7 +188,9 @@ async function main() {
   document.addEventListener("input", (e) => {
     const el = e.target as HTMLInputElement;
     if (["price", "exportPrice", "a_power", "a_fixed"].includes(el.id) || el.id.startsWith("a_")) edited.add(el.id);
-    if (el.name === "who") edited.add("who");
+    if (el.name === "who") { edited.add("who"); edited.delete("price"); }
+    if (el.name === "consMode") { edited.add("modeSwitched"); edited.delete("consBill"); edited.delete("consKwh"); }
+    if (el.id === "cons") edited.add(radio("consMode") === "bill" ? "consBill" : "consKwh");
     if (el.name === "size") { edited.delete("price"); edited.delete("a_power"); }
     if (el.id === "province") edited.delete("exportPrice");
     schedule();

@@ -56,6 +56,9 @@ def load_shapes() -> dict[str, list[float]]:
     x.columns = ["m", "d", "h", "p20", "p30"]
     x = x.dropna(subset=["p20"])
     assert len(x) == 8760, len(x)
+    # the file counts elapsed local hours: 23 rows on 29 Mar 2026 and 25 on 25 Oct 2026 (DST), which is
+    # what makes the elapsed-hour mapping below line up with the 2025 clock (30 Mar / 26 Oct 2025)
+    assert (x[(x.m == 3) & (x.d == 29)].shape[0], x[(x.m == 10) & (x.d == 25)].shape[0]) == (23, 25)
     out = {}
     local_index = [(i + 1) % 8760 for i in range(8760)]  # UTC hour i = local hour i+1 of 2025 (CET in Jan)
     # verify: hour 0 UTC on 1 Jan is 01:00 local

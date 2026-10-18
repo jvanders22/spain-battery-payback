@@ -66,7 +66,7 @@
     <input id="price" type="number" inputmode="decimal" min="0" step="100"></label>
   <p class="hint" id="priceHint"></p>
   <label class="check"><input id="gridCharge" type="checkbox" checked> Also charge from the grid in cheap night hours when that pays (not used with a fixed price)</label>
-  <label class="check"><input id="irpf" type="checkbox"> Claim the 2026 IRPF deduction (10 %, max €500; homes, installed and paid in 2026)</label>
+  <label class="check"><input id="irpf" type="checkbox"> Claim the 2026 IRPF deduction (10 %, max €500; homes with panels, installed and paid in 2026)</label>
 </form>
 
 <section id="result" aria-live="polite" aria-busy="true">
@@ -74,7 +74,7 @@
   <p class="verdict" id="verdict">Loading 8,760 hours of 2025 data…</p>
   <dl class="figures">
     <div><dt>Saved in year 1</dt><dd id="fSave">–</dd></div>
-    <div><dt>Simple payback</dt><dd id="fPayback">–</dd></div>
+    <div><dt>Payback</dt><dd id="fPayback">–</dd></div>
     <div><dt>10-year net</dt><dd id="fNet">–</dd></div>
   </dl>
   <p class="est">ESTIMATE · <span id="resultNote"></span></p>
@@ -112,7 +112,9 @@
   bill, with electricity tax (IEE) and IVA. The power term (€/kW) does not change and is left out. Year 2–10 savings
   are recalculated with the battery's capacity reduced each year.</p>
   <p>No discounting, no price inflation, no maintenance or inverter replacement. Canary and Balearic Islands, Ceuta and
-  Melilla use peninsular tariff periods here, which is an approximation.</p>
+  Melilla use peninsular tariff periods here, which is an approximation. PVPC prices are the 2025 published ones (with
+  2025 peajes and cargos inside); the time-of-use and indexed tariffs use the 2026 tables. The night-charging rule knows the
+  day's load and solar in advance, which flatters it slightly; it is switched off if it would not lower the bill.</p>
 </section>
 
 <section id="sources">

@@ -123,6 +123,8 @@ export interface Result {
   paybackYearsDegraded: number | null; // year in which cumulative degraded savings pass the price
   net10: number;
   breakEvenPrice10: number; // battery price at which 10-year savings = price
+  gridChargeUsed: boolean;
+  irpfApplied: boolean;
   cyclesPerYear: number;
   gridChargedKwh: number;
   flows: Flows;
@@ -130,13 +132,13 @@ export interface Result {
   hourly: Hourly;
 }
 
-export function battery(inp: Inputs, year = 0): Battery {
+export function battery(inp: Inputs, year = 0, gridCharge = inp.gridCharge && inp.tariff !== "fixed"): Battery {
   const fade = Math.max(0, 1 - inp.degradationPerYear * year);
   return {
     capacityKwh: inp.batteryKwh * inp.usableShare * fade,
     powerKw: inp.batteryPowerKw,
     roundTrip: inp.roundTrip,
-    gridCharge: inp.gridCharge && inp.tariff !== "fixed",
+    gridCharge,
   };
 }
 
@@ -146,14 +148,26 @@ export function run(y: YearData, inp: Inputs): Result {
   const iva = !inp.business;
   const baseFlows = simulate(h, null);
   const base = bill(y, h, baseFlows, inp.exportPrice, iva);
-  const flows = simulate(h, battery(inp, 0));
-  const withBattery = bill(y, h, flows, inp.exportPrice, iva);
+  let gridCharge = inp.gridCharge && inp.tariff !== "fixed";
+  let flows = simulate(h, battery(inp, 0, gridCharge));
+  let withBattery = bill(y, h, flows, inp.exportPrice, iva);
+  if (gridCharge) {
+    // the simple charge rule can misjudge; never let it make the bill worse than self-consumption only
+    const plain = simulate(h, battery(inp, 0, false));
+    const plainBill = bill(y, h, plain, inp.exportPrice, iva);
+    if (plainBill.energyCost <= withBattery.energyCost) {
+      gridCharge = false;
+      flows = plain;
+      withBattery = plainBill;
+    }
+  }
   const savingsByYear: number[] = [];
   for (let yr = 0; yr < 10; yr++) {
-    const f = yr === 0 ? flows : simulate(h, battery(inp, yr));
+    const f = yr === 0 ? flows : simulate(h, battery(inp, yr, gridCharge));
     savingsByYear.push(base.energyCost - (yr === 0 ? withBattery : bill(y, h, f, inp.exportPrice, iva)).energyCost);
   }
-  const deduction = inp.irpfDeduction && !inp.business ? 0.1 * Math.min(inp.batteryPrice, 5000) : 0;
+  const irpf = inp.irpfDeduction && !inp.business && inp.kwp > 0; // storage counts only as part of a self-consumption installation
+  const deduction = irpf ? 0.1 * Math.min(inp.batteryPrice, 5000) : 0;
   const netPrice = inp.batteryPrice - deduction;
   const s1 = savingsByYear[0];
   const total10 = savingsByYear.reduce((a, b) => a + b, 0);
@@ -174,7 +188,10 @@ export function run(y: YearData, inp: Inputs): Result {
     paybackYears: s1 > 0 ? netPrice / s1 : null,
     paybackYearsDegraded: degraded,
     net10: total10 - netPrice,
-    breakEvenPrice10: total10 + deduction,
+    // price P such that P - deduction(P) = 10-year savings
+    breakEvenPrice10: !irpf ? total10 : total10 / 0.9 <= 5000 ? total10 / 0.9 : total10 + 500,
+    gridChargeUsed: gridCharge,
+    irpfApplied: irpf,
     cyclesPerYear: inp.batteryKwh > 0 ? flows.discharged / (inp.batteryKwh * inp.usableShare) : 0,
     gridChargedKwh: flows.gridCharged,
     flows,

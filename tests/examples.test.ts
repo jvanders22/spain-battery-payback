@@ -48,3 +48,23 @@ describe("worked examples (sanity ranges)", () => {
     expect(r.savingsYear1).toBeGreaterThan(50);
   });
 });
+
+describe("finance and safeguards", () => {
+  it("grid charging never makes the year-1 bill worse than self-consumption only", () => {
+    for (const [code, tariff] of [["28", "pvpc"], ["41", "tou20"], ["46", "tou30"], ["15", "indexed"]] as const) {
+      const on = example(`gc-on-${code}`, code, { tariff, gridCharge: true, kwp: 0 });
+      const off = example(`gc-off-${code}`, code, { tariff, gridCharge: false, kwp: 0 });
+      expect(on.withBattery.energyCost).toBeLessThanOrEqual(off.withBattery.energyCost + 1e-9);
+    }
+  });
+  it("IRPF: 10 % up to €500, homes with panels only, and the break-even price accounts for it", () => {
+    const r = example("irpf", "28", { irpfDeduction: true, batteryPrice: 7000 });
+    expect(r.netPrice).toBe(6500);
+    expect(r.irpfApplied).toBe(true);
+    const total10 = r.savingsByYear.reduce((a, b) => a + b, 0);
+    const p = r.breakEvenPrice10;
+    expect(p - 0.1 * Math.min(p, 5000)).toBeCloseTo(total10, 6);
+    expect(example("irpf-nosolar", "28", { irpfDeduction: true, kwp: 0 }).irpfApplied).toBe(false);
+    expect(example("irpf-biz", "28", { irpfDeduction: true, business: true }).irpfApplied).toBe(false);
+  });
+});

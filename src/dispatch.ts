@@ -6,7 +6,8 @@
 //     battery looks at today's prices (known the day before) and at today's expected load and solar.
 //     If the energy it will be short of between 08:00 and 24:00 costs more than night power after
 //     losses, it buys that amount from the grid in the cheapest hours between 00:00 and 08:00, and it
-//     does not discharge during those night hours.
+//     does not discharge until the last of those hours. The day's load and solar are taken as known
+//     (perfect foresight, optimistic); model.ts keeps grid charging only if it lowers the annual bill.
 
 export interface Battery {
   capacityKwh: number; // usable capacity
@@ -82,7 +83,7 @@ export function simulate(h: Hourly, b: Battery | null): Flows {
   let discharged = 0;
   const eta = b ? Math.sqrt(b.roundTrip) : 1;
   let plan = new Map<number, number>();
-  let planned = false;
+  let lastBuy = -1; // index of the last planned grid-charge hour today
   for (let i = 0; i < n; i++) {
     const net = h.solar[i] - h.load[i];
     if (!b || b.capacityKwh <= 0) {
@@ -92,9 +93,8 @@ export function simulate(h: Hourly, b: Battery | null): Flows {
     }
     if (b.gridCharge && (h.hour[i] === 0 || i === 0)) {
       plan = planDay(h, i, s, b);
-      planned = plan.size > 0;
+      lastBuy = plan.size ? Math.max(...plan.keys()) : -1;
     }
-    if (h.hour[i] >= NIGHT_END) planned = false;
     let charge = 0; // stored kWh added this hour
     if (net >= 0) {
       const c = Math.min(net * eta, b.powerKw * eta, b.capacityKwh - s);
@@ -103,7 +103,8 @@ export function simulate(h: Hourly, b: Battery | null): Flows {
       exp[i] = net - c / eta;
     } else {
       const need = -net;
-      const canDischarge = !(b.gridCharge && planned && h.hour[i] < NIGHT_END);
+      // while waiting for (or doing) the planned cheap-hour charge, don't empty the battery at night
+      const canDischarge = !(b.gridCharge && i <= lastBuy);
       const d = canDischarge ? Math.min(need, b.powerKw, s * eta) : 0;
       s -= d / eta;
       discharged += d;

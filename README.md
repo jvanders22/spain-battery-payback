@@ -19,8 +19,8 @@ Live: https://jvanders22.github.io/spain-battery-payback/
 3. Optional cheap-hour charging (not for fixed prices): at local midnight, if today's 08:00–24:00 deficit
    (net of the solar surplus that will refill the battery) costs more than night power ÷ round-trip efficiency,
    buy it in the cheapest 00:00–08:00 hours and do not discharge in those night hours. Day-ahead prices are known
-   the afternoon before, so this uses no information a real controller would not have; the load and solar of the
-   day are taken as known (optimistic).
+   the afternoon before, but the day's load and solar are taken as known (perfect foresight, optimistic). If the
+   rule does not lower the annual bill versus self-consumption only, it is switched off.
 4. Bill: simplified net billing (RD 244/2019 art. 14): monthly credit = exports × €/kWh, capped at the month's
    energy cost; IEE (5.11269632 %) and IVA (21 %, not for businesses) on the remainder. Power term excluded.
 5. Years 2–10 are re-simulated with capacity reduced by the degradation rate. No discounting or inflation.
@@ -51,5 +51,7 @@ in `tests/examples.test.ts`. `npm run axe` runs axe-core on the built page (CI t
 
 ## Caveats
 2025 prices and 2023 weather are one year each, not a forecast. The load is the average Spanish profile, not your
-meter: households with big evening use benefit more. Islands, Ceuta and Melilla use peninsular tariff periods.
+meter: households with big evening use benefit more. Islands, Ceuta and Melilla use peninsular tariff periods. PVPC uses 2025 published prices (2025 peajes and
+cargos inside); time-of-use and indexed tariffs use the 2026 tables. The tariff cross-check compares with our own
+Python calculator, whose 2026 values were transcribed from the BOE (verified 10 Oct 2026), not with the BOE directly.
 Not financial advice.
