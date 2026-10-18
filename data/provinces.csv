@@ -1,0 +1,53 @@
+code,name,capital,lat,lon,tz
+01,Álava,Vitoria-Gasteiz,42.85,-2.67,Europe/Madrid
+02,Albacete,Albacete,38.99,-1.86,Europe/Madrid
+03,Alicante,Alicante,38.35,-0.48,Europe/Madrid
+04,Almería,Almería,36.84,-2.46,Europe/Madrid
+05,Ávila,Ávila,40.66,-4.70,Europe/Madrid
+06,Badajoz,Badajoz,38.88,-6.97,Europe/Madrid
+07,Illes Balears,Palma,39.57,2.65,Europe/Madrid
+08,Barcelona,Barcelona,41.39,2.17,Europe/Madrid
+09,Burgos,Burgos,42.34,-3.70,Europe/Madrid
+10,Cáceres,Cáceres,39.47,-6.37,Europe/Madrid
+11,Cádiz,Cádiz,36.53,-6.29,Europe/Madrid
+12,Castellón,Castelló de la Plana,39.99,-0.05,Europe/Madrid
+13,Ciudad Real,Ciudad Real,38.98,-3.93,Europe/Madrid
+14,Córdoba,Córdoba,37.89,-4.78,Europe/Madrid
+15,A Coruña,A Coruña,43.36,-8.41,Europe/Madrid
+16,Cuenca,Cuenca,40.07,-2.13,Europe/Madrid
+17,Girona,Girona,41.98,2.82,Europe/Madrid
+18,Granada,Granada,37.18,-3.60,Europe/Madrid
+19,Guadalajara,Guadalajara,40.63,-3.17,Europe/Madrid
+20,Gipuzkoa,Donostia-San Sebastián,43.32,-1.98,Europe/Madrid
+21,Huelva,Huelva,37.26,-6.95,Europe/Madrid
+22,Huesca,Huesca,42.14,-0.41,Europe/Madrid
+23,Jaén,Jaén,37.77,-3.79,Europe/Madrid
+24,León,León,42.60,-5.57,Europe/Madrid
+25,Lleida,Lleida,41.62,0.62,Europe/Madrid
+26,La Rioja,Logroño,42.47,-2.45,Europe/Madrid
+27,Lugo,Lugo,43.01,-7.56,Europe/Madrid
+28,Madrid,Madrid,40.42,-3.70,Europe/Madrid
+29,Málaga,Málaga,36.72,-4.42,Europe/Madrid
+30,Murcia,Murcia,37.99,-1.13,Europe/Madrid
+31,Navarra,Pamplona,42.81,-1.64,Europe/Madrid
+32,Ourense,Ourense,42.34,-7.86,Europe/Madrid
+33,Asturias,Oviedo,43.36,-5.85,Europe/Madrid
+34,Palencia,Palencia,42.01,-4.53,Europe/Madrid
+35,Las Palmas,Las Palmas de Gran Canaria,28.12,-15.43,Atlantic/Canary
+36,Pontevedra,Pontevedra,42.43,-8.64,Europe/Madrid
+37,Salamanca,Salamanca,40.97,-5.66,Europe/Madrid
+38,Santa Cruz de Tenerife,Santa Cruz de Tenerife,28.46,-16.25,Atlantic/Canary
+39,Cantabria,Santander,43.46,-3.80,Europe/Madrid
+40,Segovia,Segovia,40.95,-4.12,Europe/Madrid
+41,Sevilla,Sevilla,37.39,-5.98,Europe/Madrid
+42,Soria,Soria,41.76,-2.47,Europe/Madrid
+43,Tarragona,Tarragona,41.12,1.25,Europe/Madrid
+44,Teruel,Teruel,40.34,-1.11,Europe/Madrid
+45,Toledo,Toledo,39.86,-4.03,Europe/Madrid
+46,Valencia,València,39.47,-0.38,Europe/Madrid
+47,Valladolid,Valladolid,41.65,-4.72,Europe/Madrid
+48,Bizkaia,Bilbao,43.26,-2.93,Europe/Madrid
+49,Zamora,Zamora,41.50,-5.75,Europe/Madrid
+50,Zaragoza,Zaragoza,41.65,-0.89,Europe/Madrid
+51,Ceuta,Ceuta,35.89,-5.32,Europe/Madrid
+52,Melilla,Melilla,35.29,-2.94,Europe/Madrid

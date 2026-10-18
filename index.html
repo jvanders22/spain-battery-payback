@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Will a home battery pay for itself in Spain? Battery payback checker</title>
+<meta name="description" content="Hour-by-hour check of what a 5, 10 or 15 kWh battery saves a Spanish home or small business with solar, using 2025 OMIE and PVPC prices, PVGIS solar and REE load profiles.">
+<link rel="icon" href="data:,">
+</head>
+<body>
+<a class="skip" href="#result">Skip to the result</a>
+<header>
+  <p class="kicker">Spain · solar + battery · 2025 prices, 2026 tariffs</p>
+  <h1 id="headline">Battery payback checker</h1>
+  <p class="lede">Enter your consumption, panels, province and tariff. The page replays every hour of 2025 with
+  real wholesale and PVPC prices, PVGIS sunshine for your province and the official REE consumption profile, and
+  tells you what a 5, 10 or 15 kWh battery would have saved.</p>
+</header>
+
+<main>
+<form id="form" novalidate>
+  <h2 id="you">Your home or business</h2>
+  <fieldset>
+    <legend>Consumption</legend>
+    <div class="row">
+      <label><input type="radio" name="consMode" value="kwh" checked> kWh per year</label>
+      <label><input type="radio" name="consMode" value="bill"> Monthly bill (€)</label>
+    </div>
+    <label class="field"><span id="consLabel">Annual consumption, kWh</span>
+      <input id="cons" name="cons" type="number" inputmode="decimal" min="0" step="100" value="3500"></label>
+    <p class="hint" id="consHint"></p>
+  </fieldset>
+  <div class="grid2">
+    <label class="field"><span>Solar panels, kWp (0 = none)</span>
+      <input id="kwp" type="number" inputmode="decimal" min="0" step="0.5" value="4"></label>
+    <label class="field"><span>Province (sets the solar yield)</span>
+      <select id="province"></select></label>
+  </div>
+  <p class="hint" id="yieldHint"></p>
+  <label class="field"><span>Tariff</span>
+    <select id="tariff">
+      <option value="pvpc">PVPC (regulated, hourly price)</option>
+      <option value="fixed">Fixed price, same every hour</option>
+      <option value="indexed">Indexed to the wholesale market (OMIE)</option>
+      <option value="tou20">2.0TD, three periods (punta, llano, valle)</option>
+      <option value="tou30">3.0TD, six periods (business over 15 kW)</option>
+    </select></label>
+  <div class="row">
+    <label><input type="radio" name="who" value="home" checked> Home</label>
+    <label><input type="radio" name="who" value="business"> Business (IVA recoverable)</label>
+  </div>
+  <label class="field"><span>Surplus compensation, €/kWh (simplified net billing)</span>
+    <input id="exportPrice" type="number" inputmode="decimal" min="0" step="0.005"></label>
+  <p class="hint" id="exportHint"></p>
+
+  <h2 id="battery">The battery</h2>
+  <fieldset>
+    <legend>Size</legend>
+    <div class="row" id="sizes">
+      <label><input type="radio" name="size" value="5"> 5 kWh</label>
+      <label><input type="radio" name="size" value="10" checked> 10 kWh</label>
+      <label><input type="radio" name="size" value="15"> 15 kWh</label>
+    </div>
+  </fieldset>
+  <label class="field"><span>Installed price, € <span id="priceVat">(IVA included)</span></span>
+    <input id="price" type="number" inputmode="decimal" min="0" step="100"></label>
+  <p class="hint" id="priceHint"></p>
+  <label class="check"><input id="gridCharge" type="checkbox" checked> Also charge from the grid in cheap night hours when that pays (not used with a fixed price)</label>
+  <label class="check"><input id="irpf" type="checkbox"> Claim the 2026 IRPF deduction (10 %, max €500; homes with panels, installed and paid in 2026)</label>
+</form>
+
+<section id="result" aria-live="polite" aria-busy="true">
+  <h2>Result</h2>
+  <p class="verdict" id="verdict">Loading 8,760 hours of 2025 data…</p>
+  <dl class="figures">
+    <div><dt>Saved in year 1</dt><dd id="fSave">–</dd></div>
+    <div><dt>Payback</dt><dd id="fPayback">–</dd></div>
+    <div><dt>10-year net</dt><dd id="fNet">–</dd></div>
+  </dl>
+  <p class="est">ESTIMATE · <span id="resultNote"></span></p>
+
+  <figure>
+    <figcaption><strong id="chartTitle">A typical summer and winter day</strong>
+      <span class="sub">Average of every July and January day in the simulation, with the battery.</span></figcaption>
+    <div id="chart"></div>
+    <p class="source">Load: REE perfil inicial 2026 · Solar: PVGIS 5.3 (2023 weather) · Prices: OMIE, REE PVPC 2025 · Model: this page</p>
+  </figure>
+
+  <h3>Where the energy goes, per year</h3>
+  <table id="flows">
+    <thead><tr><th scope="col"><span class="vh">Per year</span></th><th scope="col">Without battery</th><th scope="col">With battery</th></tr></thead>
+    <tbody></tbody>
+  </table>
+</section>
+
+<section id="assumptions">
+  <h2>Assumptions you can change</h2>
+  <p>Every number here feeds the result above. Defaults are labelled with where they come from.</p>
+  <div id="assumptionFields"></div>
+</section>
+
+<section id="how">
+  <h2>How it works</h2>
+  <p>The page replays the 8,760 hours of 2025. Each hour: solar first covers your load; any surplus charges the
+  battery and the rest is exported; when the load is bigger than the solar, the battery covers the gap until it is
+  empty, then you import. With an hourly or time-of-use tariff the battery can also look at the next day's prices
+  (published the afternoon before) and, if the evening will be short of solar and night power is cheaper after
+  losses, fill up in the cheapest hours between 00:00 and 08:00.</p>
+  <p>Exports are paid by simplified net billing (Real Decreto 244/2019, art. 14): each month the credit is capped at
+  the cost of the energy you bought, so surplus beyond that is worth nothing. That cap is why a battery often adds
+  less than you would expect when the panels are already large. Savings are the difference in the energy part of the
+  bill, with electricity tax (IEE) and IVA. The power term (€/kW) does not change and is left out. Year 2–10 savings
+  are recalculated with the battery's capacity reduced each year.</p>
+  <p>No discounting, no price inflation, no maintenance or inverter replacement. Canary and Balearic Islands, Ceuta and
+  Melilla use peninsular tariff periods here, which is an approximation. PVPC prices are the 2025 published ones (with
+  2025 peajes and cargos inside); the time-of-use and indexed tariffs use the 2026 tables. The night-charging rule knows the
+  day's load and solar in advance, which flatters it slightly; it is switched off if it would not lower the bill.</p>
+</section>
+
+<section id="sources">
+  <h2>Sources</h2>
+  <ul id="sourceList"></ul>
+</section>
+</main>
+<footer>
+  <p>Not financial advice; check a written quote. Code and data: <a href="https://github.com/jvanders22/spain-battery-payback">github.com/jvanders22/spain-battery-payback</a>.
+  PVGIS © European Communities, 2001–2026.</p>
+</footer>
+<script type="module" src="/src/main.ts"></script>
+</body>
+</html>
