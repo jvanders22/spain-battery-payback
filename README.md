@@ -5,6 +5,15 @@ Spanish home or small business and compares the energy bill with and without a 5
 
 Live: https://jvanders22.github.io/spain-battery-payback/
 
+## Run locally
+Requires Node 22.
+```
+npm ci
+npm run dev
+npm test
+npm run build
+```
+
 ## What it does
 - Inputs: annual kWh or a monthly bill, solar kWp (or none), province, tariff (fixed, PVPC, indexed, 2.0TD
   three periods, 3.0TD six periods), surplus compensation €/kWh, battery size and price, IRPF deduction.
@@ -55,3 +64,6 @@ meter: households with big evening use benefit more. Islands, Ceuta and Melilla 
 cargos inside); time-of-use and indexed tariffs use the 2026 tables. The tariff cross-check compares with our own
 Python calculator, whose 2026 values were transcribed from the BOE (verified 10 Oct 2026), not with the BOE directly.
 Not financial advice.
+
+## License
+MIT
